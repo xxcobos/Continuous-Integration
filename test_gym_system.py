@@ -5,7 +5,7 @@ class TestGymSystem(unittest.TestCase):
     """Unit tests for the Gym and GymMembership classes."""
 
     def setUp(self):
-        """Set up test fixtures."""
+        """Set up test fixtures for the Gym system tests."""
         self.basic_features = {"Group Classes": 25, "Crossfit Sessions": 10}
         self.premium_features = {"Personal Trainer": 40, "Sauna": 10, "Nutrition Plan": 20}
         self.family_features = {"Tennis Court": 10, "Group Classes": 15}
@@ -65,11 +65,13 @@ class TestGymSystem(unittest.TestCase):
         self.premium_membership.add_feature("Personal Trainer")
         self.premium_membership.add_feature("Sauna")
         total_cost = self.gym.calculate_total_cost(self.premium_membership, 5)
-        self.assertAlmostEqual(total_cost, 622.75, places=0)
+        expected_cost = 622.75
+        self.assertAlmostEqual(total_cost, expected_cost, places=0)
 
         self.basic_membership.add_feature("Group Classes")
         total_cost = self.gym.calculate_total_cost(self.basic_membership, 4)
-        self.assertAlmostEqual(total_cost, 286, places=0)
+        expected_cost = 286
+        self.assertAlmostEqual(total_cost, expected_cost, places=0)
 
     def test_premium_membership_features(self):
         """Test additional cost calculation for premium memberships."""
