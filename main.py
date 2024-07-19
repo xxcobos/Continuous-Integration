@@ -1,3 +1,5 @@
+"""Este módulo maneja la gestión de membresías en un gimnasio."""
+
 class GymMembership:
     """Representa un plan de membresía de gimnasio con características adicionales."""
 
