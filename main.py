@@ -108,7 +108,7 @@ class Gym:
             if total_cost > threshold:
                 total_cost -= discount
                 print(f"Special discount of ${discount} applied for total cost over ${threshold}")
-                break  # Break after applying the first valid discount
+                break
 
         return total_cost
 
@@ -129,9 +129,8 @@ class Gym:
             confirmation = input("Do you want to confirm this membership? (yes/no): ").lower()
             if confirmation == 'yes':
                 return total_cost
-            else:
-                return -1
-        except Exception as e:
+            return -1
+        except ValueError as e:
             print(f"Error: {e}")
             return -1
         
@@ -171,7 +170,10 @@ def main():
 
             while True:
                 print("\nAvailable Features:")
-                features_list = [feature for feature in membership.additional_features.keys() if feature not in membership.selected_features]
+                features_list = [
+                    feature for feature in membership.additional_features.keys()
+                    if feature not in membership.selected_features
+                ]
                 for i, feature in enumerate(features_list, start=1):
                     print(f"{i}. {feature}: ${membership.additional_features[feature]}")
                 
@@ -179,16 +181,15 @@ def main():
                 print("\n")
                 if feature_selection.lower() == 'done':
                     break
-                else:
-                    try:
-                        feature_selection = int(feature_selection) - 1
-                        if feature_selection < 0 or feature_selection >= len(features_list):
-                            raise ValueError("Invalid selection. Please select a valid number.")
-                        feature_name = features_list[feature_selection]
-                        membership.selected_features.append(feature_name)
-                        print(f"Adding {feature_name} feature to your membership.")
-                    except ValueError as e:
-                        print(e)
+                try:
+                    feature_selection = int(feature_selection) - 1
+                    if feature_selection < 0 or feature_selection >= len(features_list):
+                        raise ValueError("Invalid selection. Please select a valid number.")
+                    feature_name = features_list[feature_selection]
+                    membership.selected_features.append(feature_name)
+                    print(f"Adding {feature_name} feature to your membership.")
+                except ValueError as e:
+                    print(e)
 
             total_cost = gym.confirm_membership(membership, num_members)
             if total_cost != -1:
