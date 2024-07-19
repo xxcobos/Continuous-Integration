@@ -1,32 +1,35 @@
-import unittest
+"""
+Unit tests for the Gym Membership Management System
+"""
+
+import pytest
 from src.main import GymMembership, Gym
 
-class TestGymMembership(unittest.TestCase):
-    def test_add_feature(self):
-        membership = GymMembership("Basic", 100, {"Feature1": 20})
-        membership.add_feature("Feature1")
-        self.assertIn("Feature1", membership.selected_features)
+def test_add_feature():
+    """Test adding a feature to a membership."""
+    membership = GymMembership("Basic", 100, {"Feature1": 20})
+    membership.add_feature("Feature1")
+    assert "Feature1" in membership.selected_features
 
-    def test_calculate_cost(self):
-        membership = GymMembership("Basic", 100, {"Feature1": 20})
-        membership.add_feature("Feature1")
-        self.assertEqual(membership.calculate_cost(), 120)
+def test_calculate_cost():
+    """Test calculating the total cost of a membership."""
+    membership = GymMembership("Basic", 100, {"Feature1": 20})
+    membership.add_feature("Feature1")
+    assert membership.calculate_cost() == 120
 
-class TestGym(unittest.TestCase):
-    def test_add_membership(self):
-        gym = Gym()
-        membership = GymMembership("Basic", 100)
-        gym.add_membership(membership)
-        self.assertIn("Basic", gym.memberships)
+def test_add_membership():
+    """Test adding a membership to the gym."""
+    gym = Gym()
+    membership = GymMembership("Basic", 100)
+    gym.add_membership(membership)
+    assert "Basic" in gym.memberships
 
-    def test_calculate_total_cost(self):
-        gym = Gym()
-        membership = GymMembership("Basic", 100, {"Feature1": 20})
-        gym.add_membership(membership)
-        membership.add_feature("Feature1")
-        self.assertEqual(gym.calculate_total_cost("Basic", num_members=1, apply_premium=False), 120)
-        self.assertEqual(gym.calculate_total_cost("Basic", num_members=2, apply_premium=False), 108)  # 10% discount for group
-        self.assertEqual(gym.calculate_total_cost("Basic", num_members=1, apply_premium=True), 138)  # 15% surcharge for premium
-
-if __name__ == "__main__":
-    unittest.main()
+def test_calculate_total_cost():
+    """Test calculating the total cost with discounts and surcharges."""
+    gym = Gym()
+    membership = GymMembership("Basic", 100, {"Feature1": 20})
+    gym.add_membership(membership)
+    membership.add_feature("Feature1")
+    assert gym.calculate_total_cost("Basic", num_members=1, apply_premium=False) == 120
+    assert gym.calculate_total_cost("Basic", num_members=2, apply_premium=False) == 108  # 10% discount for group
+    assert gym.calculate_total_cost("Basic", num_members=1, apply_premium=True) == 138  # 15% surcharge for premium
